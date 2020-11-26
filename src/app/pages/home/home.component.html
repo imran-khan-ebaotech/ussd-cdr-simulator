@@ -1,0 +1,57 @@
+<div class="row justify-content-center">
+  <div class="col-12">
+    <p class="response-message">{{response}}</p>
+  </div>
+</div>
+
+<div class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center pb-2 mt-3">
+  <h1 class="h2" style="text-align: center;">Dialer</h1>
+</div>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <input class="form-group dialer-input" [(ngModel)]="currentMessage" />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-4 dialer-button" (click)="appendMessage('1')">1</div>
+    <div class="col-4 dialer-button" (click)="appendMessage('2')">2</div>
+    <div class="col-4 dialer-button" (click)="appendMessage('3')">3</div>
+  </div>
+  <div class="row">
+    <div class="col-4 dialer-button" (click)="appendMessage('4')">4</div>
+    <div class="col-4 dialer-button" (click)="appendMessage('5')">5</div>
+    <div class="col-4 dialer-button" (click)="appendMessage('6')">6</div>
+  </div>
+  <div class="row">
+    <div class="col-4 dialer-button" (click)="appendMessage('7')">7</div>
+    <div class="col-4 dialer-button" (click)="appendMessage('8')">8</div>
+    <div class="col-4 dialer-button" (click)="appendMessage('9')">9</div>
+  </div>
+  <div class="row">
+    <div class="col-4 dialer-button" (click)="appendMessage('*')">*</div>
+    <div class="col-4 dialer-button" (click)="appendMessage('0')">0</div>
+    <div class="col-4 dialer-button" (click)="appendMessage('#')">#</div>
+  </div>
+  <div class="row">
+    <div class="col-4 dialer-button">
+      <button class="btn btn-secondary recharge" [disabled]="rechargeDisabled" (click)="recharge()">Recharge</button>
+    </div>
+    <div class="col-4 dialer-button">
+      <button class="btn btn-secondary clear" (click)="clearMessage()">Clear</button>
+    </div>
+    <div class="col-4 dialer-button" >
+      <button class="btn btn-secondary dial" (click)="dial()">Dial</button>      
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-6">
+      <label for="accountNo">Account Number</label>
+    </div>
+    <div class="col-6">
+      <input name="accountNo" class="form-group"[(ngModel)]="accountNo"/>
+    </div>
+  </div>
+</div>

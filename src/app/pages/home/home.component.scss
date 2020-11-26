@@ -1,0 +1,45 @@
+.dialer-button {
+    width: 100px;
+    height: 100px;
+    font-size: xx-large;
+    text-align: center;
+    padding-top: 25px;
+    border: 1px solid silver;
+    
+    &:hover {
+        background-color: silver !important;
+    }
+}
+
+p.response-message {
+    text-align: center;
+    font-size: large;
+}
+
+.recharge {
+    width: 100%;
+    font-size: large;
+    background-color: teal;
+}
+
+.clear {
+    width: 100%;
+    font-size: large;
+    background-color: tomato;
+}
+
+.dial {
+    width: 100%;
+    font-size: large;
+    background-color: greenyellow;
+}
+
+
+.dialer-input {
+    width: 100%;
+    height: 100px;
+    font-size: xx-large;
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}

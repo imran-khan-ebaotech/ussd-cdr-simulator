@@ -1,0 +1,27 @@
+{
+  "accounts": [
+    {
+      "accountNo": "ACC001",
+      "policyNumber": null,
+      "accountName": "Jane Appleseed",
+      "dob": "2001-01-09T00:00:00",
+      "gender": "F",
+      "enrolled": false,
+      "enrollmentType": null,
+      "firstName": "Jane",
+      "lastName": "Appleseed",
+      "nationality": "7",
+      "occupationCode": 2,
+      "occupation": "Actor",
+      "employerInfo": "eBaoTech",
+      "email": "jane.appleseed@example.com",
+      "mobile": "0123456789",
+      "address1": "169",
+      "address2": "Bombo Road Wandegeya",
+      "address3": "",
+      "address4": "Kampala",
+      "postCode": "23203"
+    }
+  ],
+  "sessions": []
+}
