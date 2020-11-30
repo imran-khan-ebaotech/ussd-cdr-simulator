@@ -1,7 +1,6 @@
 const { json } = require('body-parser')
 const express = require('express')
 const db = require('../config/database')
-const uuidv4 = require('uuid/v4');
 const lifeService = require('../service/life.service');
 
 
