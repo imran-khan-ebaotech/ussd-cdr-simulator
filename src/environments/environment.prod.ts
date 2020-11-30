@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiBase: 'https://sandbox.sg.ebaocloud.com/insuremogipresales/ayo-ussd-cdr-simulator'
+  apiBase: 'https://sandbox.sg.ebaocloud.com/insuremogipresales/ussd-cdr-simulator'
 };
