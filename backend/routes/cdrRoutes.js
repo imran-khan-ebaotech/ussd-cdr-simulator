@@ -16,33 +16,12 @@ router.get('/test', (req, res) => {
 router.post('/', (req, res) => {
   // Extract info from request
   let text = req.body.text;
-  let sessionId = req.body.sessionId;
   let accountNo = req.body.accountNo;
-  let session = {};
 
   let waitAPI = false;
 
   let response = {
     message: "",
-    sessionId: ""
-  }
-
-  // load session
-  if (!sessionId) {
-    sessionId = uuidv4();
-    session = {
-      "sessionId": sessionId,
-      "accountNo": accountNo,
-      "messages": []
-    }
-    response.sessionId = sessionId;
-    db.get('sessions')
-      .push(session)
-      .write();
-  } else {
-    session = db.get('sessions')
-      .find({ "sessionId": sessionId })
-      .value();
   }
 
   // load account
@@ -79,12 +58,6 @@ router.post('/', (req, res) => {
   db.get('accounts')
     .find({ accountNo: accountNo })
     .assign(account)
-    .write();
-
-  // Save Session
-  session = db.get('sessions')
-    .find({ "sessionId": sessionId })
-    .assign(session)
     .write();
 
   // Set Response
