@@ -1,7 +1,7 @@
 {
-  "name": "stackable-policy-backend",
+  "name": "ussd-cdr-simulator-backend",
   "version": "1.0.0",
-  "description": "Stackable Policy App backend",
+  "description": "USSD CDR Simulator App backend",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
