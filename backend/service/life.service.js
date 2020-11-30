@@ -145,6 +145,9 @@ const LifeService = {
                 }
             })
                 .then((response) => {
+                    account.certiCode = "IDAYO" + randomInt1;
+                    account.certiType = 9;
+
                     if (response.data.policy) {
                         let policyNumber = response.data.policy.policyNumber;
                         account.policyNumber = policyNumber;
@@ -306,6 +309,74 @@ const LifeService = {
                 .catch(error => {
                     console.log(error);
                     reject(error.response.data.messages[0].message);
+                })
+        })
+
+    },
+
+    startClaim: (detail, account) => {
+
+        let randomInt1 = Math.floor(Math.random() * 99999);
+
+        let request = {
+            "clientRequestId": "AYOCLM" + randomInt1,
+            "clientRequestTime": "2020-11-30T10:20:54",
+            "policyNumber": account.policyNumber,
+            "claimant": {
+               "name": account.firstName,
+               "partyContact": {
+                  "email": account.email,
+                  "mobile": account.mobile
+                  }
+             },
+             "insured": {
+               "name": account.firstName,
+               "gender": account.gender,
+               "certiType": account.certiType,
+               "certiCode": account.certiCode
+             },
+             "relationToInsured": 7,
+             "event": {
+               "reportType": 1,
+               "eventNature": 2,
+               "eventTime": "2020-11-30T10:20:54",
+               "eventDetail": detail,
+               "eventLocation": "Kampala"
+             },
+            "documents": [{
+               "type": "00014",
+               "path": "string"
+             }],
+           "claimType": 2
+         }
+
+         console.log(request);
+
+         return new Promise((resolve, reject) => {
+            axios.post(`${baseUrl}/claimsurface/claim/eBao/register`, request, {
+                headers: {
+                    'X-ebao-tenant-id': 'eBao',
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then((response) => {
+
+                    if (response.data.claimCaseNo) {
+                        account.claimCaseNo = response.data.claimCaseNo;
+                        console.log("Claim case no: " + response.data.claimCaseNo);
+                    }
+
+                    // Save Account
+                    db.get('accounts')
+                        .find({ accountNo: account.accountNo })
+                        .assign(account)
+                        .write();
+
+                    resolve(response.data);
+                })
+                .catch(error => {
+                    console.log(error.response.data.exceptions);
+                    reject(error.response.data.exceptions[0]);
                 })
         })
 

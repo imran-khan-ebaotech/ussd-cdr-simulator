@@ -27,7 +27,7 @@ function generateNewAccount(AccNo) {
     "occupationCode": 2,
     "occupation": "Actor",
     "employerInfo": "eBaoTech",
-    "email": `imran.khan@ebaotech.com`,
+    "email": "joanna.cong@ebaotech.com",
     "mobile": "0123456789",
     "address1": "169",
     "address2": "Bombo Road Wandegeya",
@@ -124,35 +124,68 @@ router.post('/', (req, res) => {
   }
 
   if (account.enrolled) {
-    waitAPI = true;
-    lifeService.getPolicyDetails(account)
-      .then(policy => {
-        let MyLifeSumAssured = 0;
-        let MyLifePremium = 0;
-        let MyHospitalSumAssured = 0;
-        let MyHospitalPremium = 0;
 
-        policy.coverages.forEach(cov => {
-          if (cov.productCode === 'MYLIFES') {
-            MyLifeSumAssured = cov.currentPremium.sumAssured;
-            MyLifePremium = cov.currentPremium.premium;
-          }
-          if (cov.productCode === 'MYHOSPITALS') {
-            MyHospitalSumAssured = cov.currentPremium.sumAssured;
-            MyHospitalPremium = cov.currentPremium.premium;
-          }
+    if (text === '*296#*9#') {
+      // Initiate Claim
+      response.message = `You are making a claim on your policy. What is the reason for the claim? 1. Accident Injury 2. Accident Death`
+    } else if (text === '*296#*9#*1#') {
+      waitAPI = true;
+      let detail = 'Accident Injury'
+      lifeService.startClaim(detail, account)
+        .then(claim => {
+          let claimNo = claim.claimCaseNo;
+          response.message = `Your claim has been successfully submitted. Your claim number is ${claimNo}`;
+          res.json(response);
+        })
+        .catch(error => {
+          response.message = `An error occured submitting your claim. Please try again later.`;
+          res.json(response);
         });
+    } else if (text === '*296#*9#*2#') {
+      waitAPI = true;
+      let detail = 'Accident Death'
+      lifeService.startClaim(detail, account)
+        .then(claim => {
+          let claimNo = claim.claimCaseNo;
+          response.message = `Your claim has been successfully submitted. Your claim number is ${claimNo}`;
+          res.json(response);
+        })
+        .catch(error => {
+          response.message = `An error occured submitting your claim. Please try again later.`;
+          res.json(response);
+        });
+    } else {
+      // Generic Account Status 
+      waitAPI = true;
+      lifeService.getPolicyDetails(account)
+        .then(policy => {
+          let MyLifeSumAssured = 0;
+          let MyLifePremium = 0;
+          let MyHospitalSumAssured = 0;
+          let MyHospitalPremium = 0;
 
-        let additionalDetails = MyLifeSumAssured ? ` MyLife premium: ${MyLifePremium} UGX, sum assured: ${MyLifeSumAssured} UGX.` : "";
-        additionalDetails = additionalDetails + (MyHospitalSumAssured ? ` MyHospital premium: ${MyHospitalPremium} UGX, sum assured: ${MyHospitalSumAssured} UGX.` : "")
-        response.message = `you have already registered for ${account.enrollmentType}. Your policy number is ${account.policyNumber}. ${additionalDetails}`
+          policy.coverages.forEach(cov => {
+            if (cov.productCode === 'MYLIFES') {
+              MyLifeSumAssured = cov.currentPremium.sumAssured;
+              MyLifePremium = cov.currentPremium.premium;
+            }
+            if (cov.productCode === 'MYHOSPITALS') {
+              MyHospitalSumAssured = cov.currentPremium.sumAssured;
+              MyHospitalPremium = cov.currentPremium.premium;
+            }
+          });
 
-        res.json(response);
-      })
-      .catch(error => {
-        response.message = `you have already registered for ${account.enrollmentType}. Your policy number is ${account.policyNumber}.`
-        res.json(response);
-      })
+          let additionalDetails = MyLifeSumAssured ? ` MyLife premium: ${MyLifePremium} UGX, sum assured: ${MyLifeSumAssured} UGX.` : "";
+          additionalDetails = additionalDetails + (MyHospitalSumAssured ? ` MyHospital premium: ${MyHospitalPremium} UGX, sum assured: ${MyHospitalSumAssured} UGX.` : "")
+          response.message = `you have already registered for ${account.enrollmentType}. Your policy number is ${account.policyNumber}. ${additionalDetails}. Use *9# to initiate a claim.`
+
+          res.json(response);
+        })
+        .catch(error => {
+          response.message = `you have already registered for ${account.enrollmentType}. Your policy number is ${account.policyNumber}. Use *9# to initiate a claim.`
+          res.json(response);
+        })
+    }
   } else {
     // Process Message Workflow
     if (text === '*296#') {
@@ -217,11 +250,6 @@ router.post('/', (req, res) => {
       response.message = "Invalid Code."
     }
 
-    // Save message to session
-    // if (!session.messages) {
-    //   session.messages = [];
-    // }
-    // session.messages = [...session.messages, text];
   }
 
   // Save Account
